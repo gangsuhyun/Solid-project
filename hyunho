@@ -1,0 +1,63 @@
+import serial
+from pyPS4Controller.controller import Controller
+    
+ser = serial.Serial('/dev/ttyS0', 115200)
+    
+class MyController(Controller):
+
+    def __init__(self, **kwargs):
+        Controller.__init__(self, **kwargs)
+
+    def on_L1_press(self):
+        print("go")
+        ser.write(str.encode('q'))
+
+    def on_R1_press(self):
+        print("back")
+        ser.write(str.encode('w'))
+
+    def on_L1_release(self):
+        print("release")
+        ser.write(str.encode('s'))
+
+    def on_R1_release(self):
+        print("release")
+        ser.write(str.encode('s'))
+
+    def on_square_press(self):
+        print("left")
+        ser.write(str.encode('l'))
+
+    def on_circle_press(self):
+        print("right")
+        ser.write(str.encode('r'))
+
+    def on_x_press(self):
+        print("release")
+        ser.write(str.encode('m'))
+
+    def on_circle_release(self):
+        print("stop")
+        ser.write(str.encode('x'))
+        ser.write(str.encode('z'))
+
+    def on_square_release(self):
+        print("sllow")
+        ser.write(str.encode('h'))
+        ser.write(str.encode('z'))
+
+    def on_triangle_press(self):
+        print("stop")
+        ser.write(str.encode('b'))
+
+    def on_triangle_release(self):
+        print("sllow")
+        ser.write(str.encode('g'))
+
+
+
+
+
+controller = MyController(interface="/dev/input/js0", connecting_using_ds4drv=False)
+# you can start listening before controller is paired, as long as you pair it within the timeout window
+controller.listen(timeout=60)
