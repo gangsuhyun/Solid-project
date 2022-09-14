@@ -1,0 +1,17 @@
+<?php
+        $mysql_hostname = '20.39.201.23';  //mysql,mariadb설치된 운영체제(win,ubuntu등등)ip
+        $mysql_username = 'root';             //mysql,mariadb username
+        $mysql_password = '1234';             //mysql,mariadb password
+        $mysql_port = '3306';                    //mysql,mariadb port
+        $mysql_charset = 'utf8';                 //코드에 한글기입시 필요 없으면 안해도무방
+        $mysql_dbname = 'solid';               //dbname
+
+        $connect = new mysqli($mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname);
+        //var_dump($connect);  //new mysql부분은 버전마다 다를수있음 우리조는 신규mariadb버전이라 저문구사용2022-09-07
+
+//      if($connect->connect_errno){
+//              echo '[fail] : '.$connect->connect_error.'';
+//      }else{
+//              echo '[success!!]';
+//      }
+?>
