@@ -1,0 +1,35 @@
+<?php
+
+include 'config.php'; //config으로 연결된mariadb include
+date_default_timezone_set('Asia/Seoul');  //Azure ubuntu가상환경 사용시 테이블시간이 다르게 적용됨 그러니 한국서울시간으로 저장하라는 코드
+
+$date = date('Y-m-d H:i:s');
+$stop = $_POST['stop'];
+$acc = $_POST['acc'];
+$go = 'gggo';
+
+//$stop = 0;
+if($connect){
+        $sql = "insert into solid_stop values ('$date','$stop',$acc);";
+        $res = mysqli_query($connect,$sql);
+//      $go = "gggo";
+
+        //$del_query = "DELETE FROM solid WHERE date <DATE_ADD(now(), INTERVAL -1 hour);";
+        //$del_result = mysqli_query($connect, $del_query);
+
+        //$sel = "select * from solid_stop where acc between 0.8 and 1 and date BETWEEN DATE_ADD(now(), INTERVAL -3 second) AND now();";// acc가 0.8이상일때
+        $sel = "select * from solid_stop where acc between 0.9 and 1;";
+        $sel_res = mysqli_query($connect,$sel);
+
+        if(mysqli_num_rows($sel_res))
+        {
+                //acc가 0.8이상일경우 실행할 코드
+                $go = "sssop";
+                $sel_res = null;
+
+        }
+        echo json_encode($go);
+}else
+        die("connection failed : ".mysqli_connect_error());
+mysqli_close($connect);
+?>
