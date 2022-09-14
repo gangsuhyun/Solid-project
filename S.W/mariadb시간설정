@@ -1,0 +1,17 @@
+SET GLOBAL time_zone='+06:00'; # DB 테이블 쌓일때 시간 안맞아서 코드에 6시간 추가해줘서 실시간 시간맞춤
+
+SET time_zone = '+06:00';
+
+SELECT @@global.time_zone, @@session.time_zone;
+
+
+SET GLOBAL time_zone='Asia/Seoul';
+
+
+select count(*) from mysql.time_zone;
+
+
+select user, host, account_locked, password_expired from user;
+
+
+date_default_timezone_set('Asia/Seoul');
