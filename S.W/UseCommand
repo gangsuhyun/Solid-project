@@ -1,0 +1,79 @@
+Azure 가상머신
+ssh접속(windows PowerShell)
+ssh ctl@20.39.201.23
+
+CTL
+A123123123!@
+IP
+20.39.201.23
+아이피는 늘확인한다(체크안하고끌시 변동)
+
+그라파나 설정
+https://jhoplin7259.tistory.com/71
+그라파나 시작
+sudo systemctl start grafana-server 
+
+user : admin
+pass : admin
+
+sudo vim /var/www/html/index.html
+50포트 아파치 홈페이지.
+-----------------------------------
+mjpg
+
+------------------------------------
+
+9-05
+
+influxdb 자료가 너무없어서 mysql로 긴급회피
+
+설치위치
+/usr/bin/mysql
+
+실행
+sudo systemctl start mysql
+
+접속
+sudo /usr/bin/mysql -u root -p
+(패스워드는 에저 비밀번호와동일)
+A123123123!@
+
+--------------------------------------
+mariadb
+
+사용자 정보확인
+
+SELECT User, Host, authentication_string FROM mysql.user;
+
+mysql 나가기
+
+quit 치면
+bye 라고 뜨며 종료됨
+그외명령어
+https://shyunku.tistory.com/43
+
+------------------------------------
+
+yolo사이즈 명령어
+
+python train.py --img 416 --batch 88 --epochs 700 --data C:\yop\1\data.yaml --weights C:\yop\yolov5\runs\train\exp118\weights\best.pt  
+//img 크기,사이즈 확인잘하고 동일하게 배정 batch 램사용량, 그래픽카드 사용시 그래픽카드메모리로 할당, epochs 검토할 장수 기본300부터해서
+늘려가는걸 추천, data 라벨링한 파일data.yaml 위치,경로배정, weights yolo가 딥러닝할 인공지능선택 n,s,m,l,x순으로 커짐
+python train.py --img 1280 --batch-size 48 --epochs 400 --data C:\yop\t5\data.yaml --weights yolov5s.pt        
+
+-----------------------------------
+yolo검토 명령어
+// detext.py train시킨걸 검출해보는 명령어
+
+python detect.py --source C:\yop\F_sch\test\images\test1.jpg --weights C:\yop\yolov5\runs\train\exp\weights\best.pt
+
+python detect.py --source http://iottt.iptime.org:8095/?action=stream --weights C:/yop/yolov5/runs/train/end/weights/best.pt
+
+------------------------------------
+라즈베리파이 
+도메인(DDNS)
+iottt.iptime.org:(port)
+port
+45002 = vnc
+22 = putty
+8095 = mjpg
