@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <title>살려냇조</title>
+                <style>
+                        body {
+                                background-image: url('https://w.namu.la/s/09e2d8c9859a46b36ce3c6a70dac641d2295ed0900ff15764673b48149f433b1a6557ed97af89e122e0ef210441ccd9a5304cb1544b2e4e612ef7a9b359b947de6bfd2bae45c62ad14f8488709f1c6b936fe272c92b4f565ce15809bed062a42c6148f41cffd8a323efdf93183340924');
+                                background-repeat: no-repeat;
+                                background-size : cover ;
+                        }
+                </style>
+        </head>
+        <body>
+                <h1><center>살려냈조 자율주행 위험감지</center></h1>
+        </body>
+        <style>
+        <-- -->
+        @import url(//fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+        .jm-font{
+                font-family: 'Jeju Myeongjo', serif;
+                color: orange;
+        }
+        </style>
+        <body>
+                <center><h2><p class="jm-font">Mysql DB Grafana 시각화<p></h2></center>
+                <center><iframe src="http://20.39.201.23:3000/d-solo/toQmPFGVk/solid?orgId=1&from=1662500029810&to=1662521629810&theme=light&panelId=2" width="530" height="300" frameborder="0"></center></iframe>
+        </body>
+        <body>
+                <p><center><h2>라즈베리 실시간</h2></center></p>
+                <body>
+                        <!-- -->
+                        <center><iframe src='http://iottt.iptime.org:8095/?action=stream'width="59%" height="480"></center></iframe>
+                        <!-- -->
+                </body>
+                <body>
+                        <p><h2>결과물 주행 영상</h2><p>
+                        <button type="button" class="navyBtn" onClick="location.href='http://iottt.iptime.org:8095/?action=stream'">Youtube Link</button>
+                </body>
+                        <span style = " font-size:2.5em; color: purple;font-weight: bold;">
+                                <center>Come Team Alive</center>
+                                <center>이현호 김민태 강수현 황준상</center>
+                        </span>
+        </body>
+</html>
