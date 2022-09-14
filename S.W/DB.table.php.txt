@@ -1,5 +1,5 @@
 <?php
-
+# detect.py write 부분 testdb.php 임
 include 'config.php'; //config으로 연결된mariadb include
 date_default_timezone_set('Asia/Seoul');  //Azure ubuntu가상환경 사용시 테이블시간이 다르게 적용됨 그러니 한국서울시간으로 저장하라는 코드
 
