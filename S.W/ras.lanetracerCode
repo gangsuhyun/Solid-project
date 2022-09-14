@@ -1,0 +1,170 @@
+import RPi.GPIO as GPIO               # 라즈베리파이 GPIO 핀
+import serial                              # UART 통신
+import cv2                                # OPENCV
+import numpy as np 
+import time                              # 딜레이
+import pygame                          # 사운드
+import requests                        
+
+ser = serial.Serial('/dev/ttyS0',115200)        # UART 통신 설정 
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(20,GPIO.OUT)                        # LED 핀 설정
+GPIO.setup(21,GPIO.OUT)
+GPIO.setup(16,GPIO.OUT)
+GPIO.setup(26,GPIO.OUT)
+
+pygame.mixer.init()
+go = pygame.mixer.Sound('/home/hh/autocar/danger.wav')          # 사운드파일
+
+
+def main():
+    camera = cv2.VideoCapture(0)                 #  카메라 설정
+    camera.set(3,320)                                 #  크기설정
+    camera.set(4,240)
+    state = 0
+    while( camera.isOpened() ):
+        _, frame = camera.read()
+        frame = cv2.flip(frame,-1)                   # 상하반전
+        cv2.imshow('normal',frame) 
+        crop_img =frame[180:240, 0:320]          # 화면 분할
+
+        url = "http://20.39.201.23/testdb.php"
+        res = requests.post(url)
+        result = res.text
+       # result = int(result[15])
+        print("res:", result)
+        
+        gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+        
+        blur = cv2.GaussianBlur(gray,(5,5),0)
+        
+        ret,thresh1 = cv2.threshold(blur,150,255,cv2.THRESH_BINARY_INV)
+        
+        mask = cv2.erode(thresh1, None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
+        mask = mask.astype(np.uint8)
+        cv2.imshow('mask',mask)
+        
+        contours,hierarchy = cv2.findContours(mask.copy(), 1, cv2.CHAIN_APPROX_NONE)
+        if result == "\"gogo\"": #주행
+            
+            if len(contours) > 0: 
+                c = max(contours, key=cv2.contourArea)           # 차선위치 계산
+                M = cv2.moments(c)
+            
+                cx = int(M['m10']/M['m00'])          
+                cy = int(M['m01']/M['m00'])
+
+
+                cv2.drawContours(frame, contours, -1, (0, 255, 0), 1)
+
+                #print(cx)
+
+                if cx >= 100 and cx <= 117 and state == 1:            #주행 및 회전 설정
+                    print("Left Left Left") #젤큰회전
+                    state = 0
+                    ser.write(str.encode('q'))                       # q직진 ,  l(젤큰회전.왼)r(젤큰회전.오) i(중간회전.왼),o(중간회전.오),j(젤조금회전.왼),k(젤조금회전.오)
+                    ser.write(str.encode('l'))
+
+
+                elif cx >= 118 and cx <= 124 and state == 0:                        
+                    print("Left Left") # 중간회전
+                    state = 1 
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('i'))
+
+
+                elif cx >= 125 and cx <= 134 and state == 1:                 
+                    print("Left") # 기본회전
+                    state = 0 
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('j'))
+
+
+                elif cx >= 135 and cx <= 175 and state == 0:               
+                    print("go")
+                    state = 1
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('m'))
+
+
+                elif cx >= 176 and cx <= 187 and state == 1:
+                    print("Right")
+                    state = 0
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('k'))
+
+
+                elif cx >= 188 and cx <= 194 and state == 0:
+                    print("Right Right")
+                    state = 1
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('o'))
+
+
+                elif cx >= 195 and cx <= 210 and state == 1:                   
+                    print("Right Right Right")
+                    state = 0
+                    ser.write(str.encode('q'))
+                    ser.write(str.encode('r'))
+
+                else :
+                    cx = 160
+                
+            
+        
+        #elif cv2.waitKey(20) == 27:
+        else:
+            print("set")
+            #ser.write(str.encode('s'))              # 표지판 인식시 경고음 및 LED 
+            go.play()
+            GPIO.output(16,True)                     # LED 불 1초마다 깜빡거림
+            GPIO.output(26,True)
+            GPIO.output(20,True)
+            GPIO.output(21,True)
+            time.sleep(1)
+            GPIO.output(16,False)
+            GPIO.output(26,False)
+            GPIO.output(20,False)
+            GPIO.output(21,False)
+            ser.write(str.encode('s'))
+            time.sleep(1)
+            GPIO.output(16,True)
+            GPIO.output(26,True)
+            GPIO.output(20,True)
+            GPIO.output(21,True)
+            time.sleep(1)
+            GPIO.output(16,False)
+            GPIO.output(26,False)
+            GPIO.output(20,False)
+            GPIO.output(21,False)
+            time.sleep(1)
+            GPIO.output(16,True)
+            GPIO.output(26,True)
+            GPIO.output(20,True)
+            GPIO.output(21,True)
+            time.sleep(1)
+            GPIO.output(16,False)
+            GPIO.output(26,False)
+            GPIO.output(20,False)
+            GPIO.output(21,False)
+            time.sleep(1)
+            go.stop()
+            #ser.write(str.encode('q'))
+            
+    
+        if cv2.waitKey(20) == 27 :
+            ser.write(str.encode('s'))
+            GPIO.output(16,False)
+            GPIO.output(26,False)
+            GPIO.output(20,False)
+            GPIO.output(21,False)
+            break
+        
+
+    cv2.destroyAllWindows()               # 모든 창 닫기
+
+if __name__ == '__main__':
+    main()
