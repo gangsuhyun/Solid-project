@@ -4,4 +4,4 @@ $STREAMER_PATH/mjpg_streamer -i "input_uvc.so -d /dev/video1 -y -n -f 30"  -o "o
 
 
 
-/mjpg.sh 로 저장 sh mjpg.sh 로 실행
+mjpg.sh / sh mjpg.sh 로 
