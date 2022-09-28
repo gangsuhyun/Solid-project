@@ -1,3 +1,7 @@
 export STREAMER_PATH=/home/hh/project/mjpg-streamer/mjpg-streamer-experimental #경로 맞는지 확인
 export LD_LIBRARY_PATH=$STREAMER_PATH
 $STREAMER_PATH/mjpg_streamer -i "input_uvc.so -d /dev/video1 -y -n -f 30"  -o "output_http.so -p 8095 -w $STREAMER_PATH/www" # 경로/ 포트번호 맞느지 확인 video 0/1
+
+
+
+/mjpg.sh 로 저장 sh mjpg.sh 로 실행
